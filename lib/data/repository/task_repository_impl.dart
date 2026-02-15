@@ -12,4 +12,15 @@ class TaskRepositoryImpl implements TaskRepository {
     List<TaskModel> taskModels = await _taskLocalDataSource.getAllTask();
     return taskModels.map((model){return model.toEntity();}).toList();
   }
+
+  @override
+  Future<void> addTask({required TaskEntity taskEntity}) async {
+    try{
+      _taskLocalDataSource.addTask(taskModel: TaskModel.fromEntity(taskEntity));
+    }
+    catch(error){
+      print("---------------------------------------------------------");
+      print(error.toString());
+    }
+  }
 }

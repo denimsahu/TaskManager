@@ -28,9 +28,9 @@ class TaskModel extends HiveObject{
     required this.id,
     required this.title,
     required this.priority,
-    this.description,
-    this.dueDate,
-    this.isCompleted=false,
+    required this.description,
+    required this.dueDate,
+    required this.isCompleted,
   });
 
   TaskEntity toEntity() {

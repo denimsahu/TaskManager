@@ -38,11 +38,22 @@ class _ListTaskScreenState extends State<ListTaskScreen> {
               return Icon(Icons.error);
             }
             else if (state is LoadedTaskState){
-              return Text("Task 1");
+              return ListView.builder(
+                itemBuilder: (context,index){
+                  return Text(state.allTasks[index].priority.name);
+                },
+                itemCount: state.allTasks.length,
+                );
             }
             return Text("Hello World!!");
           },
         ),
+      ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: (){
+        Navigator.of(context).pushNamed("/add_task_screen");
+      }, 
+      child: Icon(Icons.add),
       ),
     );
   }
