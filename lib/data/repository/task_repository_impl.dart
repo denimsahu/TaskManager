@@ -10,17 +10,24 @@ class TaskRepositoryImpl implements TaskRepository {
   @override
   Future<List<TaskEntity>> getAllTask() async {
     List<TaskModel> taskModels = await _taskLocalDataSource.getAllTask();
-    return taskModels.map((model){return model.toEntity();}).toList();
+    return taskModels.map((model){return model.toEntity();}).toList().reversed.toList();
   }
 
   @override
   Future<void> addTask({required TaskEntity taskEntity}) async {
-    try{
-      _taskLocalDataSource.addTask(taskModel: TaskModel.fromEntity(taskEntity));
-    }
-    catch(error){
-      print("---------------------------------------------------------");
-      print(error.toString());
-    }
+    _taskLocalDataSource.addTask(taskModel: TaskModel.fromEntity(taskEntity));
   }
+
+  @override
+  Future<void> editTask({required TaskEntity taskEntity}) async {
+    await _taskLocalDataSource.editTask(taskModel:TaskModel.fromEntity(taskEntity));
+  }
+  
+  @override
+  Future<void> deleteTask({required TaskEntity taskEntity}) async {
+    await _taskLocalDataSource.deleteTask(taskModel: TaskModel.fromEntity(taskEntity));
+  }
+
+  
+
 }

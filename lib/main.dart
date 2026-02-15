@@ -5,9 +5,11 @@ import 'package:task_manager/data/datasource/task_local_data_source.dart';
 import 'package:task_manager/data/models/task_model.dart';
 import 'package:task_manager/data/repository/task_repository_impl.dart';
 import 'package:task_manager/domain/usecases/add_task_usecase.dart';
-import 'package:task_manager/domain/usecases/all_task_usecase.dart';
+import 'package:task_manager/domain/usecases/get_all_task_usecase.dart';
+import 'package:task_manager/domain/usecases/delete_task_usecase.dart';
+import 'package:task_manager/domain/usecases/edit_task_usecase.dart';
 import 'package:task_manager/presentation/bloc/task_bloc.dart';
-import 'package:task_manager/presentation/screens/add_task_screen.dart';
+import 'package:task_manager/presentation/screens/task_screen.dart';
 import 'package:task_manager/presentation/screens/list_task_screen.dart';
 
 Future<void> main() async {
@@ -16,7 +18,6 @@ Future<void> main() async {
   Hive.registerAdapter(TaskModelAdapter());
   Box<TaskModel> tasksBox = await Hive.openBox<TaskModel>('Tasks');
   TaskRepositoryImpl taskRepositoryImpl = TaskRepositoryImpl(taskLocalDataSource: TaskLocalDataSource(taskBox: tasksBox));
-  
   runApp(MyApp(taskRepositoryImpl: taskRepositoryImpl,));
 }
 
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
             return TaskBloc(
               getAllTaskUsecase:GetAllTaskUsecase(taskRepository: taskRepositoryImpl),
               addTaskUsecase: AddTaskUsecase(taskRepository:taskRepositoryImpl),
-              
+              editTaskUsecase: EditTaskUsecase(taskRepository: taskRepositoryImpl),
+              deleteTaskUsecase: DeleteTaskUsecase(taskRepository: taskRepositoryImpl),
             );
           }
         ),
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         routes: {
           "/":(context)=>const ListTaskScreen(),
-          "/add_task_screen":(context)=>const AddTaskScreen(),
+          "/task_screen":(context)=>const TaskScreen(),
         },
         title: 'Task Manager',
         theme: ThemeData(

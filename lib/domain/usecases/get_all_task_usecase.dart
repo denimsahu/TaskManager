@@ -7,7 +7,6 @@ class GetAllTaskUsecase{
   GetAllTaskUsecase({required this.taskRepository});
 
   Future<List<TaskEntity>> call() async {
-
     return await taskRepository.getAllTask();
   }
 }

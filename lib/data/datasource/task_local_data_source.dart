@@ -11,12 +11,14 @@ class TaskLocalDataSource {
   }
 
   Future<void> addTask({required TaskModel taskModel})async{
-    try{
-      await _taskBox.add(taskModel);
-    }
-    catch(error){
-      print("-------------------------------------------------------------------------------------------------------------------");
-      print(error.toString());
-    }
+    await _taskBox.put(taskModel.id, taskModel);
+  }
+
+  Future<void> editTask({required TaskModel taskModel})async{
+    await _taskBox.put(taskModel.id, taskModel);
+  }
+
+  Future<void> deleteTask({required TaskModel taskModel})async{
+    await _taskBox.delete(taskModel.id);
   }
 }

@@ -16,6 +16,10 @@ class LoadedTaskState extends TaskState{
 
 class TaskAddedState extends TaskState{}
 
+class TaskUpdatedState extends TaskState{}
+
+class TaskDeletedState extends TaskState{}
+
 class ErrorTaskState extends TaskState{
   final String message;
   ErrorTaskState({required this.message});

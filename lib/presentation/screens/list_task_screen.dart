@@ -40,7 +40,22 @@ class _ListTaskScreenState extends State<ListTaskScreen> {
             else if (state is LoadedTaskState){
               return ListView.builder(
                 itemBuilder: (context,index){
-                  return Text(state.allTasks[index].priority.name);
+                  bool isCompleted = state.allTasks[index].isCompleted;
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed("/task_screen",arguments: state.allTasks[index],);
+                    },
+                    child: ListTile(
+                      title: Text(state.allTasks[index].title),
+                      subtitle: Text(state.allTasks[index].priority.name),
+                      trailing: Checkbox(
+                        value: isCompleted,
+                        onChanged: (value){
+                          context.read<TaskBloc>().add(EditTaskEvent(id: state.allTasks[index].id, title: state.allTasks[index].title, priority: state.allTasks[index].priority, description: state.allTasks[index].description, dueDate: state.allTasks[index].dueDate, isCompleted: value!));
+                        }
+                      ),
+                    ),
+                  );
                 },
                 itemCount: state.allTasks.length,
                 );
@@ -51,7 +66,7 @@ class _ListTaskScreenState extends State<ListTaskScreen> {
       ),
     floatingActionButton: FloatingActionButton(
       onPressed: (){
-        Navigator.of(context).pushNamed("/add_task_screen");
+        Navigator.of(context).pushNamed("/task_screen");
       }, 
       child: Icon(Icons.add),
       ),
