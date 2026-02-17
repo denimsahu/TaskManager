@@ -189,7 +189,6 @@ class _AddTaskScreenState extends State<TaskScreen> {
                           listener: (context, state) {
                             if(state is TaskDeletedState){
                               Navigator.of(context).pop();
-                              context.read<TaskBloc>().add(LoadAllTaskEvent());
                             }
                           },
                           child: taskEntity!=null?

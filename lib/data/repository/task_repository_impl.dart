@@ -24,10 +24,14 @@ class TaskRepositoryImpl implements TaskRepository {
   }
   
   @override
-  Future<void> deleteTask({required TaskEntity taskEntity}) async {
-    await _taskLocalDataSource.deleteTask(taskModel: TaskModel.fromEntity(taskEntity));
+  Future<List<TaskEntity>> deleteTask({required TaskEntity taskEntity}) async {
+    List<TaskModel> taskModels = await _taskLocalDataSource.deleteTask(taskModel: TaskModel.fromEntity(taskEntity));
+    return taskModels.map((model){return model.toEntity();}).toList().reversed.toList();
   }
 
-  
-
+  @override
+  Future<List<TaskEntity>> filterTask({required FilterType filterType})async{
+    List<TaskModel> filteredTask = await _taskLocalDataSource.filterTask(filterType:filterType);
+    return filteredTask.map((model){return model.toEntity();}).toList().reversed.toList();
+  }
 }

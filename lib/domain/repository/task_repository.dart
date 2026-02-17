@@ -4,5 +4,6 @@ abstract interface class  TaskRepository{
   Future<List<TaskEntity>> getAllTask();
   Future<void> addTask({required TaskEntity taskEntity});
   Future<void> editTask ({required TaskEntity taskEntity});
-  Future<void> deleteTask({required TaskEntity taskEntity});
+  Future<List<TaskEntity>> deleteTask({required TaskEntity taskEntity});
+  Future<List<TaskEntity>> filterTask({required FilterType filterType});
 }

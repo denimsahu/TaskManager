@@ -38,7 +38,12 @@ class EditTaskEvent extends TaskEvent{
     required this.dueDate,
     required this.isCompleted,
   }); 
-  }
+}
+
+class FilterTaskEvent extends TaskEvent{
+  FilterType filterType;
+  FilterTaskEvent({required this.filterType});
+}
 
 class DeleteTaskEvent extends TaskEvent{
   TaskEntity taskEntity;

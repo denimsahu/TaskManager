@@ -1,4 +1,5 @@
 enum PriorityEnum {low, medium, high}
+enum FilterType { all, completed, pending }
 
 class TaskEntity {
   String id;

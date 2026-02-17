@@ -10,8 +10,8 @@ class LoadingTaskState extends TaskState{}
 class EmptyTaskState extends TaskState{}
 
 class LoadedTaskState extends TaskState{
-  final List<TaskEntity> allTasks;
-  LoadedTaskState({required this.allTasks});
+  final List<TaskEntity> tasksList;
+  LoadedTaskState({required this.tasksList});
 }
 
 class TaskAddedState extends TaskState{}

@@ -5,7 +5,7 @@ class DeleteTaskUsecase {
   TaskRepository taskRepository;
   DeleteTaskUsecase({required this.taskRepository});
   
-  Future<void> deleteTask({required TaskEntity taskEntity})async{
-    await taskRepository.deleteTask(taskEntity: taskEntity);
+  Future<List<TaskEntity>> call({required TaskEntity taskEntity})async{
+    return taskRepository.deleteTask(taskEntity: taskEntity);
   }
 }

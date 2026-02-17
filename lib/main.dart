@@ -5,6 +5,7 @@ import 'package:task_manager/data/datasource/task_local_data_source.dart';
 import 'package:task_manager/data/models/task_model.dart';
 import 'package:task_manager/data/repository/task_repository_impl.dart';
 import 'package:task_manager/domain/usecases/add_task_usecase.dart';
+import 'package:task_manager/domain/usecases/filter_task_usecase.dart';
 import 'package:task_manager/domain/usecases/get_all_task_usecase.dart';
 import 'package:task_manager/domain/usecases/delete_task_usecase.dart';
 import 'package:task_manager/domain/usecases/edit_task_usecase.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
               addTaskUsecase: AddTaskUsecase(taskRepository:taskRepositoryImpl),
               editTaskUsecase: EditTaskUsecase(taskRepository: taskRepositoryImpl),
               deleteTaskUsecase: DeleteTaskUsecase(taskRepository: taskRepositoryImpl),
+              filterTaskUsecase: FilterTaskUsecase(taskRepository: taskRepositoryImpl),
             );
           }
         ),
