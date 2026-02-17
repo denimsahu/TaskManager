@@ -55,160 +55,266 @@ class _AddTaskScreenState extends State<TaskScreen> {
     super.didChangeDependencies();
   }
 
-  @override
+  Widget _buildCard({required Widget child}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7F8FA),
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+
+
+
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Add Task")),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: InputDecoration(label: Text("Title")),
-                    controller: titleTextEditingController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Enter Title";
-                      }
-                      return null;
-                    },
-                  ),
-                  Row(
+      backgroundColor: const Color(0xFFE3E7EB),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFE3E7EB),
+        elevation: 0,
+        title: Text(taskEntity != null ? "Edit Task" : "Add Task"),
+      ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight - 32,
+              ),
+              child: IntrinsicHeight(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Container(
-                        width: 150,
+                      _buildCard(
                         child: TextFormField(
-                          controller: dueDateTextEditingController,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelText: "Due Date",
-                            suffixIcon: Icon(Icons.calendar_today),
+                          controller: titleTextEditingController,
+                          decoration: const InputDecoration(
+                            labelText: "Title",
+                            border: InputBorder.none,
+                            fillColor: Colors.transparent,
+                            isDense: true,
                           ),
-                          onTap: () async {
-                            final pickedDate = await showDatePicker(
-                              context: context,
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime(3000),
-                              initialDate: _selectedDate ?? DateTime.now(),
-                            );
-
-                            if (pickedDate != null) {
-                              setState(() {
-                                _selectedDate = pickedDate;
-                                dueDateTextEditingController.text ="${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-                              });
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Enter Title";
                             }
+                            return null;
                           },
                         ),
                       ),
-                      DropdownMenuFormField(
-                        label: Text("Priority"),
-                        controller: priorityTextEditingController,
-                        dropdownMenuEntries: [
-                          DropdownMenuEntry(value: PriorityEnum.low, label: PriorityEnum.low.name),
-                          DropdownMenuEntry(value: PriorityEnum.medium, label: PriorityEnum.medium.name),
-                          DropdownMenuEntry(value: PriorityEnum.high, label: PriorityEnum.high.name),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildCard(
+                              child: TextFormField(
+                                controller: dueDateTextEditingController,
+                                readOnly: true,
+                                decoration: const InputDecoration(
+                                  labelText: "Due Date",
+                                  suffixIcon: Icon(Icons.calendar_today),
+                                  border: InputBorder.none,
+                                  fillColor: Colors.transparent,
+                                  isDense: true,
+                                ),
+                                onTap: () async {
+                                  final pickedDate = await showDatePicker(
+                                    context: context,
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime(3000),
+                                    initialDate:
+                                        _selectedDate ?? DateTime.now(),
+                                  );
+
+                                  if (pickedDate != null) {
+                                    setState(() {
+                                      _selectedDate = pickedDate;
+                                      dueDateTextEditingController.text =
+                                          "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                                    });
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: _buildCard(
+                              child: DropdownMenuFormField(
+                                inputDecorationTheme:
+                                    const InputDecorationTheme(
+                                  border: InputBorder.none,
+                                  isDense: true,
+                                ),
+                                label: const Text("Priority"),
+                                controller: priorityTextEditingController,
+                                dropdownMenuEntries: [
+                                  DropdownMenuEntry(value: PriorityEnum.low,label: PriorityEnum.low.name),
+                                  DropdownMenuEntry(value: PriorityEnum.medium,label: PriorityEnum.medium.name),
+                                  DropdownMenuEntry(value: PriorityEnum.high,label: PriorityEnum.high.name),
+                                ],
+                                onSelected: (value) {
+                                  selectedPriority = value;
+                                },
+                                validator: (value) {
+                                  if (value == null &&
+                                      selectedPriority == null) {
+                                    return "Select Priority";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ),
                         ],
-                        onSelected: (value) {
-                          selectedPriority = value;
-                        },
-                        validator: (value) {
-                          if (value == null && selectedPriority==null) {
-                            return "Select Priority";
-                          }
-                          return null;
-                        },
                       ),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: _buildCard(
+                          child: TextFormField(
+                            controller: descriptionTextEditingController,
+                            decoration: const InputDecoration(
+                              labelText: "Description",
+                              border: InputBorder.none,
+                              fillColor: Colors.transparent,
+                              isDense: true,
+                              alignLabelWithHint: true,
+                            ),
+                            expands: true,
+                            maxLines: null,
+                            minLines: null,
+                            textAlignVertical: TextAlignVertical.top,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      _buildCard(
+                        child: CheckboxListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: const Text("Mark as Completed"),
+                          value: isCompleted,
+                          onChanged: (value) {
+                            setState(() {
+                              isCompleted = value!;
+                            });
+                          },
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      BlocListener<TaskBloc, TaskState>(
+                        listener: (context, state) {
+                          if (state is TaskAddedState) {
+                            Navigator.pop(context);
+                            context.read<TaskBloc>().add(LoadAllTaskEvent());
+                          }
+                          else if (state is TaskUpdatedState) {
+                            Navigator.pop(context);
+                          }
+                          else if (state is TaskDeletedState){
+                              Navigator.of(context).pop();
+                          }
+                          else if (state is ErrorTaskState){
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message.toString())));
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF2F3A45),
+                                  foregroundColor: Colors.white,
+                                  elevation: 6,
+                                  padding: const EdgeInsets.symmetric(vertical: 16),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    if (taskEntity != null) {
+                                        context.read<TaskBloc>().add(
+                                          EditTaskEvent(
+                                            id: taskEntity!.id,
+                                            title: titleTextEditingController.text,
+                                            priority: selectedPriority!,
+                                            description: descriptionTextEditingController.text,
+                                            dueDate: _selectedDate,
+                                            isCompleted: isCompleted,
+                                          ),
+                                        );
+                                    } else {
+                                      context.read<TaskBloc>().add(
+                                        AddTaskEvent(
+                                          title: titleTextEditingController.text,
+                                          priority: selectedPriority!,
+                                          description: descriptionTextEditingController.text,
+                                          dueDate: _selectedDate,
+                                          isCompleted: isCompleted,
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                                child: const Text("Save Task"),
+                              ),
+                            ),
+
+                            if (taskEntity != null) ...[
+                              const SizedBox(width: 12),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFF7F8FA),
+                                  borderRadius: BorderRadius.circular(18),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.05),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    context.read<TaskBloc>().add(
+                                      DeleteTaskEvent(taskEntity: taskEntity!),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10,),
                     ],
                   ),
-                  TextFormField(
-                    controller: descriptionTextEditingController,
-                    decoration: InputDecoration(label: Text("Description")),
-                    maxLines: 10,
-                  ),
-                  Container(
-                    width: 200,
-                    child: CheckboxListTile(
-                      checkboxScaleFactor: 1.5,
-                      title: Text("Completed"),
-                      value: isCompleted,
-                      onChanged: (value) {
-                        setState(() {
-                          isCompleted = value!;
-                        });
-                      },
-                    ),
-                  ),
-                  BlocListener<TaskBloc, TaskState>(
-                    listener: (context, state) {
-                      if(state is TaskAddedState){
-                        Navigator.pop(context);
-                        context.read<TaskBloc>().add(LoadAllTaskEvent());
-                      }
-                      if(state is TaskUpdatedState){
-                        
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              if(taskEntity!=null){
-                                try{
-                                  // print(selectedPriority.toString());
-                                  context.read<TaskBloc>().add(EditTaskEvent(id: taskEntity!.id, title: titleTextEditingController.text, priority: selectedPriority!, description: descriptionTextEditingController.text, dueDate: _selectedDate, isCompleted: isCompleted));
-                                }
-                                catch(error){
-                                  print(error.toString());
-                                }
-                              }
-                              else{
-                                context.read<TaskBloc>().add(
-                                  AddTaskEvent(
-                                    title: titleTextEditingController.text,
-                                    priority: selectedPriority!,
-                                    description:descriptionTextEditingController.text,
-                                    dueDate: _selectedDate,
-                                    isCompleted: isCompleted,
-                                  ),
-                                );
-                              }
-                            }
-                          },
-                          child: Text("Save Task"),
-                        ),
-                        BlocListener<TaskBloc, TaskState>(
-                          listener: (context, state) {
-                            if(state is TaskDeletedState){
-                              Navigator.of(context).pop();
-                            }
-                          },
-                          child: taskEntity!=null?
-                          IconButton(
-                              onPressed: (){
-                                context.read<TaskBloc>().add(DeleteTaskEvent(taskEntity: taskEntity!));
-                              }, 
-                              icon: Icon(Icons.delete),
-                              color: Colors.red,
-                            ):SizedBox()
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
-          ],
-        ),
-      ),
+          );
+        },
+      ),//
+
     );
   }
 }

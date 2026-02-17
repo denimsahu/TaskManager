@@ -3,7 +3,7 @@ import 'package:task_manager/domain/repository/task_repository.dart';
 
 class GetAllTaskUsecase{
   
-  TaskRepository taskRepository;
+  final TaskRepository taskRepository;
   GetAllTaskUsecase({required this.taskRepository});
 
   Future<List<TaskEntity>> call() async {

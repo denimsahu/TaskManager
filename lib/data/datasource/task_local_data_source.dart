@@ -8,7 +8,7 @@ class TaskLocalDataSource {
   TaskLocalDataSource({required Box<TaskModel> taskBox}):_taskBox=taskBox;
 
   Future<List<TaskModel>> getAllTask() async {
-    return await _taskBox.values.toList();
+    return  _taskBox.values.toList();
   }
 
   Future<void> addTask({required TaskModel taskModel})async{

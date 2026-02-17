@@ -26,7 +26,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       }
       catch(error){
         emit(ErrorTaskState(message: error.toString()));
-        print(error.toString());
       }
     });
 
@@ -36,8 +35,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         emit(TaskAddedState());
       }
       catch(error){
-        print("--------------------------");
-        ErrorTaskState(message: error.toString());
+        emit(ErrorTaskState(message: error.toString()));
       }
     });
 
@@ -49,8 +47,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       emit(LoadedTaskState(tasksList:tasksList));
     }
     catch(error){
-      print("--------------------------");
-      ErrorTaskState(message: error.toString());
+      emit(ErrorTaskState(message: error.toString()));
     }
   });
 
@@ -66,8 +63,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       }
     }
     catch(error){
-      print("--------------------------");
-      ErrorTaskState(message: error.toString());
+      emit(ErrorTaskState(message: error.toString()));
     }
   });
 
@@ -78,8 +74,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       emit(LoadedTaskState(tasksList: updatedTaskList));
     }
     catch(error){
-      print("--------------------------");
-      ErrorTaskState(message: error.toString());
+      emit(ErrorTaskState(message: error.toString()));
     }
   });
 

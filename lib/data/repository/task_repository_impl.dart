@@ -4,7 +4,7 @@ import 'package:task_manager/domain/entities/task_entity.dart';
 import 'package:task_manager/domain/repository/task_repository.dart';
 
 class TaskRepositoryImpl implements TaskRepository {
-  late TaskLocalDataSource _taskLocalDataSource;
+  final TaskLocalDataSource _taskLocalDataSource;
   TaskRepositoryImpl({required TaskLocalDataSource taskLocalDataSource}):_taskLocalDataSource=taskLocalDataSource;
 
   @override
@@ -15,7 +15,7 @@ class TaskRepositoryImpl implements TaskRepository {
 
   @override
   Future<void> addTask({required TaskEntity taskEntity}) async {
-    _taskLocalDataSource.addTask(taskModel: TaskModel.fromEntity(taskEntity));
+    await _taskLocalDataSource.addTask(taskModel: TaskModel.fromEntity(taskEntity));
   }
 
   @override

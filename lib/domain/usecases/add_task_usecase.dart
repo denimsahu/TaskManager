@@ -3,7 +3,7 @@ import 'package:task_manager/domain/repository/task_repository.dart';
 import 'package:uuid/uuid.dart';
 
 class AddTaskUsecase {
-  TaskRepository taskRepository;
+  final TaskRepository taskRepository;
   
   AddTaskUsecase({required this.taskRepository});
 
@@ -15,7 +15,7 @@ class AddTaskUsecase {
     required bool isCompleted,
   })async {
     String id =Uuid().v4();
-      taskRepository.addTask(taskEntity: TaskEntity(id: id, title: title, priority: priority, description: description, dueDate: dueDate, isCompleted: isCompleted));
+      await taskRepository.addTask(taskEntity: TaskEntity(id: id, title: title, priority: priority, description: description, dueDate: dueDate, isCompleted: isCompleted));
   }
 
 }
